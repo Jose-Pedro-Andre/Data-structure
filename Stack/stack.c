@@ -1,83 +1,66 @@
 #include "stack.h"
 
-void push(int data, Stack_t **my_stack)
+void push(int data, Stack_t **head)
 {
-	if (!(*my_stack))
+	if (!(*head))
 	{
-		*my_stack =  malloc(sizeof(Stack_t));
-		if (!(*my_stack))
+		*head =  malloc(sizeof(Stack_t));
+		if (!(*head))
 			exit(EXIT_FAILURE);
-		(*my_stack)->value = data;
-		(*my_stack)->next = NULL;
+		(*head)->value = data;
+		(*head)->next = NULL;
 		return ;
 	}
 	Stack_t *new_head = malloc(sizeof(Stack_t));
 	if (!new_head)
 		exit(EXIT_FAILURE);
 	new_head->value = data;
-	new_head->next = *my_stack;
-	*my_stack = new_head;
+	new_head->next = *head;
+	*head = new_head;
 	return ;
 }
-void pop(Stack_t **my_stack)
+void pop(Stack_t **head)
 {
-	if (!(*my_stack))
+	if (!(*head))
 		return ;
-	Stack_t *new = *my_stack;
-	(*my_stack) = (*my_stack)->next;
+	Stack_t *new = *head;
+	(*head) = (*head)->next;
 	free(new);
 	return ;
 }
-int peek(Stack_t *my_stack)
+int peek(Stack_t *head)
 {
-	if (!my_stack)
+	if (!head)
 		return 0;
-	return (my_stack->value);
+	return (head->value);
 }
-bool is_full(Stack_t *my_stack)
+bool is_full(Stack_t *head)
 {
-	return !my_stack ? false : true;
+	return !head ? false : true;
 }
-bool is_empty(Stack_t *my_stack)
+bool is_empty(Stack_t *head)
 {
-	return !my_stack ? true : false;
+	return !head ? true : false;
 }
 
-void print_stack(Stack_t *my_stack)
+void print_stack(Stack_t *head)
 {
-	for(; my_stack; my_stack = my_stack->next)
+	for(; head; head = head->next)
 	{
-		int n = my_stack->value;
+		int n = head->value;
 		printf("%d\n", n);
 	}
 }
-int main(int ac, char **av)
+
+
+void destroy_stack(Stack_t *head)
 {
-	Stack_t *my_stack = NULL;
-
-	if (ac < 2)
+	while(head)
 	{
-		printf("Invalid arguments: require at leat two argumens\n");
-		return 1;
+		Stack_t *tmp;
+		tmp = head;
+		head = head->next;
+		free(tmp);
 	}
-	for(int i = 1; i < ac; i++)
-	{
-		int value = atoi(av[i]);
-		push(value, &my_stack);
-	}
-	print_stack(my_stack);
-	while(my_stack)
-	{
-		/*
-		int *head = peek(my_stack);
-		if (head)
-		{
-			printf("%d\n", *head);
-		}*/
-		pop(&my_stack);
-	}
-
-	if (is_empty(my_stack))
-		printf("the stack is empty\n");
-	return 0;
 }
+
