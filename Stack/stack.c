@@ -1,6 +1,6 @@
 #include "stack.h"
 
-void push(void *data, Stack_t **my_stack)
+void push(int data, Stack_t **my_stack)
 {
 	if (!(*my_stack))
 	{
@@ -28,10 +28,10 @@ void pop(Stack_t **my_stack)
 	free(new);
 	return ;
 }
-void *peek(Stack_t *my_stack)
+int peek(Stack_t *my_stack)
 {
 	if (!my_stack)
-		return NULL;
+		return 0;
 	return (my_stack->value);
 }
 bool is_full(Stack_t *my_stack)
@@ -47,7 +47,7 @@ void print_stack(Stack_t *my_stack)
 {
 	for(; my_stack; my_stack = my_stack->next)
 	{
-		int n = *(int *)my_stack->value;
+		int n = my_stack->value;
 		printf("%d\n", n);
 	}
 }
@@ -63,7 +63,7 @@ int main(int ac, char **av)
 	for(int i = 1; i < ac; i++)
 	{
 		int value = atoi(av[i]);
-		push(&value, &my_stack);
+		push(value, &my_stack);
 	}
 	print_stack(my_stack);
 	while(my_stack)
